@@ -761,7 +761,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 
 		// 触发所有适用bean的初始化后回调。。。
+		// DefaultListableBeanFactory 管理 / SpringApplication 管理
 		// TODO SmartInitializingSingleton 的实现的用处
+		// 时间点是 所有的 单例bean 实例化完成的节点，但是
 		for (String beanName : beanNames) {
 			Object singletonInstance = getSingleton(beanName);
 			if (singletonInstance instanceof SmartInitializingSingleton) {

@@ -3,15 +3,9 @@ package custom.xml_starter;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SimpleMain {
-
 	public static void main(String[] args) {
-
-		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("test-properties.xml");
-		// 不需要 refresh
-		//		applicationContext.refresh();
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("custom/test-properties.xml");
 		int definitionCount = applicationContext.getBeanDefinitionCount();
 		System.out.println(definitionCount);
 	}
-
-
 }

@@ -6,8 +6,11 @@
 				http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context-4.2.xsd
 				http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util-4.2.xsd">
 
-	<bean id="simpleUser" class="custom.xml_starter.User">
+	<bean id="simpleUser" class="custom.xml_starter.User" abstract="true">
 		<property name="name" value="测试用户姓名" />
 	</bean>
 
+	<bean id="vipUser" class="custom.xml_starter.User" parent="simpleUser">
+		<property name="age" value="33" />
+	</bean>
 </beans>
