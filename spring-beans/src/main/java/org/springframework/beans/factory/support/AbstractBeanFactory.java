@@ -305,7 +305,13 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			try {
 				RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 				// TODO 如果被 beanDefinition 是个接口 会发生什么
+				/**
+				 * @see custom.bd.reader.xml.intf.InterfaceLoader
+				 */
 				// TODO 抽象类的 标志 是如何打上去的
+				/**
+				 * @see custom.bd.reader.xml.Main
+				 */
 				checkMergedBeanDefinition(mbd, beanName, args);
 
 				// Guarantee initialization of beans that the current bean depends on.
@@ -1247,7 +1253,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @throws BeanDefinitionStoreException in case of an invalid bean definition
 	 */
 	protected RootBeanDefinition getMergedLocalBeanDefinition(String beanName) throws BeansException {
-		// Quick check on the concurrent map first, with minimal locking.
+		//首先快速检查concurrent map，with minimal locking.
 		RootBeanDefinition mbd = this.mergedBeanDefinitions.get(beanName);
 		if (mbd != null) {
 			return mbd;
