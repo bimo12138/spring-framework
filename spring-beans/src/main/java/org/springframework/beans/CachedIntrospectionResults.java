@@ -276,7 +276,7 @@ public class CachedIntrospectionResults {
 			}
 			this.propertyDescriptorCache = new LinkedHashMap<>();
 
-			// This call is slow so we do it once.
+			// 这个调用很慢，所以我们只调用一次。
 			PropertyDescriptor[] pds = this.beanInfo.getPropertyDescriptors();
 			for (PropertyDescriptor pd : pds) {
 				if (Class.class == beanClass &&

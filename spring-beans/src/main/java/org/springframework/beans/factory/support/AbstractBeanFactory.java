@@ -341,6 +341,13 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				// Create bean instance.
 				if (mbd.isSingleton()) {
 					// TODO 为什么需要拓展 create bean 的方法
+					/**
+					 * 1. 缓存
+					 * 2. 状态校验
+					 * 3. 获取 bean
+					 * 4. 创建后状态过滤和重置
+					 * 5. 添加到缓存
+					 */
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
 							return createBean(beanName, mbd, args);
@@ -350,6 +357,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 							// eagerly by the creation process, to allow for circular reference resolution.
 							// Also remove any beans that received a temporary reference to the bean.
 							// TODO 层级销毁是不是在这
+							/**
+							 * 1. 清理缓存
+							 * 2. 销毁
+							 */
 							destroySingleton(beanName);
 							throw ex;
 						}

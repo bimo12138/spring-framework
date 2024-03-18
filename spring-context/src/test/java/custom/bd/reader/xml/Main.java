@@ -1,5 +1,6 @@
 package custom.bd.reader.xml;
 
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.SimpleBeanDefinitionRegistry;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
@@ -12,5 +13,7 @@ public class Main {
 		xmlBeanDefinitionReader.loadBeanDefinitions("custom/test-abstract-beans.xml");
 		int definitionCount = beanDefinitionRegistry.getBeanDefinitionCount();
 		System.out.println(definitionCount);
+		BeanDefinition simpleUser = beanDefinitionRegistry.getBeanDefinition("simpleUser");
+		System.out.println(simpleUser);
 	}
 }

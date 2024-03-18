@@ -858,10 +858,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			}
 			this.frozenBeanDefinitionNames = null;
 		}
-
+		// 如果需要注册的 beanDefinition 已经注册了，且 一级缓存一级有数据了
 		if (existingDefinition != null || containsSingleton(beanName)) {
 			resetBeanDefinition(beanName);
 		}
+		// if 不了的情况，且配置文件冻结了
 		else if (isConfigurationFrozen()) {
 			clearByTypeCache();
 		}

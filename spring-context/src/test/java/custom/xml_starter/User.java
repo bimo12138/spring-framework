@@ -30,4 +30,12 @@ public class User {
 				", age=" + age +
 				'}';
 	}
+
+	public void init() {
+		System.out.println("User account init!");
+	}
+
+	public void destroy() {
+		System.out.println("User account destroy!");
+	}
 }

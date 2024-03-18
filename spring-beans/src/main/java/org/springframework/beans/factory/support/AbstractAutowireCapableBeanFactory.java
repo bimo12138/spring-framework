@@ -529,6 +529,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		// Instantiate the bean.
 		// TODO 为什么需要包装一下，场景和用途
+		/**
+		 * net: 用于添加代理类?
+		 * 代码: 提供了 propertyDescription 缓存，因为本次操作耗时很久
+		 */
 		BeanWrapper instanceWrapper = null;
 		if (mbd.isSingleton()) {
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
@@ -550,6 +554,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (!mbd.postProcessed) {
 				try {
 					// TODO 例子
+					/**
+					 * 不对实际的bean操作造成影响
+					 */
 					applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
 				}
 				catch (Throwable ex) {
@@ -577,6 +584,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object exposedObject = bean;
 		try {
 			// TODO 详细的赋值
+			// RootBeanDefinition 的 propertyValues
 			populateBean(beanName, mbd, instanceWrapper);
 			// TODO 初始化方法的各种例子
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
@@ -1234,6 +1242,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				beanInstance = getInstantiationStrategy().instantiate(mbd, beanName, this);
 			}
 			BeanWrapper bw = new BeanWrapperImpl(beanInstance);
+			// beanWrapper 中的其他属性
+			/**
+			 * 1. conversionService
+			 * 2. 属性编辑器
+			 */
 			initBeanWrapper(bw);
 			return bw;
 		}
@@ -1679,6 +1692,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @see #applyBeanPostProcessorsAfterInitialization
 	 */
 	protected Object initializeBean(String beanName, Object bean, @Nullable RootBeanDefinition mbd) {
+		// aware
 		if (System.getSecurityManager() != null) {
 			AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
 				invokeAwareMethods(beanName, bean);
@@ -1689,12 +1703,21 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			invokeAwareMethods(beanName, bean);
 		}
 
+		/**
+		 * 1. aware 需要的 方法
+		 * 2. 初始化之前 jsr303 校验 validation
+		 * 3. 覆盖原本的 bean PostConstruct.class PreDestroy.class
+		 */
 		Object wrappedBean = bean;
 		if (mbd == null || !mbd.isSynthetic()) {
 			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
 		}
 
 		try {
+			/**
+			 * 1. afterPropertySet
+			 * 2. customInitMethod
+			 */
 			invokeInitMethods(beanName, wrappedBean, mbd);
 		}
 		catch (Throwable ex) {

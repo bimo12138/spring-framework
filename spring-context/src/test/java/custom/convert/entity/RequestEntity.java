@@ -1,5 +1,8 @@
 package custom.convert.entity;
 
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
 public class RequestEntity {
 
 	private String name;

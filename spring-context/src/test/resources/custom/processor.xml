@@ -7,22 +7,11 @@
 				http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util-4.2.xsd">
 
 
-	<bean id="account" class="custom.depend.LDAPAccount" init-method="init" destroy-method="destroy">
-		<property name="email" value="111@qq.com" />
-		<property name="password" value="123" />
+	<bean class="custom.postProcessor.InstantiationDemoProcessor" />
 
+
+	<bean id="simpleComp" class="custom.postProcessor.SimpleComp">
+		<property name="compName" value="xml property" />
 	</bean>
-<!-- depBean: {account: VIPAccount}	-->
-	<bean id="vipAccount" class="custom.depend.VIPAccount" depends-on="account" init-method="init" destroy-method="destroy">
-		<property name="expireDate" value="2025-01-01" />
-
-	</bean>
-
-	<bean id="simpleUser" class="custom.xml_starter.User" depends-on="account" init-method="init" destroy-method="destroy">
-		<property name="name" value="cc" />
-		<property name="age" value="12" />
-	</bean>
-
-
 
 </beans>

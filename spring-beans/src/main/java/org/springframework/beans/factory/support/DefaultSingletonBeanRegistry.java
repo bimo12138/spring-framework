@@ -206,9 +206,11 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
 		Assert.notNull(beanName, "Bean name must not be null");
+		// 一级缓存
 		synchronized (this.singletonObjects) {
 			Object singletonObject = this.singletonObjects.get(beanName);
 			if (singletonObject == null) {
+				// 正在创建
 				if (this.singletonsCurrentlyInDestruction) {
 					throw new BeanCreationNotAllowedException(beanName,
 							"Singleton bean creation not allowed while singletons of this factory are in destruction " +
@@ -217,6 +219,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				if (logger.isDebugEnabled()) {
 					logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
 				}
+				// 创建中状态过滤
 				beforeSingletonCreation(beanName);
 				boolean newSingleton = false;
 				boolean recordSuppressedExceptions = (this.suppressedExceptions == null);
@@ -250,6 +253,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					afterSingletonCreation(beanName);
 				}
 				if (newSingleton) {
+					// 添加缓存
 					addSingleton(beanName, singletonObject);
 				}
 			}
@@ -384,12 +388,14 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	public void registerContainedBean(String containedBeanName, String containingBeanName) {
 		synchronized (this.containedBeanMap) {
+			// bean: innerBean
 			Set<String> containedBeans =
 					this.containedBeanMap.computeIfAbsent(containingBeanName, k -> new LinkedHashSet<>(8));
 			if (!containedBeans.add(containedBeanName)) {
 				return;
 			}
 		}
+		// innerBean: bean
 		registerDependentBean(containedBeanName, containingBeanName);
 	}
 
@@ -538,13 +544,17 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	public void destroySingleton(String beanName) {
 		// Remove a registered singleton of the given name, if any.
+		// 三级缓存清楚
 		removeSingleton(beanName);
 
 		// Destroy the corresponding DisposableBean instance.
+
 		DisposableBean disposableBean;
 		synchronized (this.disposableBeans) {
+			// 注册的 bean 销毁
 			disposableBean = (DisposableBean) this.disposableBeans.remove(beanName);
 		}
+
 		destroyBean(beanName, disposableBean);
 	}
 
@@ -557,6 +567,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	protected void destroyBean(String beanName, @Nullable DisposableBean bean) {
 		// Trigger destruction of dependent beans first...
 		Set<String> dependencies;
+		// 获取缓存之后销毁
 		synchronized (this.dependentBeanMap) {
 			// Within full synchronization in order to guarantee a disconnected Set
 			dependencies = this.dependentBeanMap.remove(beanName);
@@ -569,7 +580,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				destroySingleton(dependentBeanName);
 			}
 		}
-
+		// 实际的销毁
 		// Actually destroy the bean now...
 		if (bean != null) {
 			try {
@@ -580,10 +591,11 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 			}
 		}
 
-		// Trigger destruction of contained beans...
+		//触发销毁bean。。。
 		Set<String> containedBeans;
 		synchronized (this.containedBeanMap) {
 			// Within full synchronization in order to guarantee a disconnected Set
+			// 赋值阶段  { depBean: rawBean }
 			containedBeans = this.containedBeanMap.remove(beanName);
 		}
 		if (containedBeans != null) {
@@ -592,7 +604,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 			}
 		}
 
-		// Remove destroyed bean from other beans' dependencies.
+		// 从其他bean的依赖项中删除已销毁的bean。
+		// 如果 value 的 bean list 为空，那么则删除对应的 key 的 bean
 		synchronized (this.dependentBeanMap) {
 			for (Iterator<Map.Entry<String, Set<String>>> it = this.dependentBeanMap.entrySet().iterator(); it.hasNext();) {
 				Map.Entry<String, Set<String>> entry = it.next();
