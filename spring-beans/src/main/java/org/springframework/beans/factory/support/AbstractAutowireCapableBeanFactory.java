@@ -630,6 +630,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		try {
 			// TODO 怎么注册销毁方法的
 			// TODO 销毁方法执行的例子
+			/**
+			 * 关键代码
+			 * this.disposableBeans.put(beanName, bean);
+			 */
 			registerDisposableBeanIfNecessary(beanName, bean, mbd);
 		}
 		catch (BeanDefinitionValidationException ex) {

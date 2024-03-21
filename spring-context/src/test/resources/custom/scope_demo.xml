@@ -12,5 +12,5 @@
 
 	<bean id="scopePro" class="custom.scope.ScopeToken" scope="prototype" />
 
-	<bean id="scopeReq" class="custom.scope.ScopeToken" scope="request" />
+	<bean id="scopeReq" class="custom.scope.DiffScope" scope="customScope" />
 </beans>
