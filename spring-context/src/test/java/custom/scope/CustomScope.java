@@ -14,7 +14,9 @@ public class CustomScope implements Scope {
 	@Override
 	public Object get(String name, ObjectFactory<?> objectFactory) {
 		Integer i = visitTimes.get(name);
+		System.out.println("index of i: " + String.valueOf(i));
 		if (i == null) {
+			visitTimes.put(name, 1);
 			return objectFactory.getObject();
 		}
 		if (i < 3) {

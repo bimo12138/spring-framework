@@ -10,7 +10,17 @@
 		<property name="infoTitle" value="6666" />
 	</bean>
 
+	<bean id="customScope" class="custom.scope.CustomScope" />
+
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+		<property name="scopes">
+			<map>
+				<entry key="custom" value-ref="customScope" />
+			</map>
+		</property>
+	</bean>
 	<bean id="scopePro" class="custom.scope.ScopeToken" scope="prototype" />
 
-	<bean id="scopeReq" class="custom.scope.DiffScope" scope="customScope" />
+	<bean id="diffScope" class="custom.scope.DiffScope" scope="custom"/>
+
 </beans>
