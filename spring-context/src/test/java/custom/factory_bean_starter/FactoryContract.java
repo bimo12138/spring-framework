@@ -11,6 +11,11 @@ public class FactoryContract implements FactoryBean<Contract> {
 	}
 	@Override
 	public Contract getObject() throws Exception {
+		if (service instanceof ContractService) {
+			Contract contract = new Contract();
+			contract.setContractName(((ContractService) service).getNextContractName());
+			return contract;
+		}
 		return null;
 	}
 

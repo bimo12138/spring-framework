@@ -3,7 +3,6 @@ package custom.factory_bean_starter;
 public class Contract {
 	private String contractNumber;
 
-
 	private String contractName;
 
 

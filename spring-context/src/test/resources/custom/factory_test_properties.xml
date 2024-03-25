@@ -6,8 +6,16 @@
 				http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context-4.2.xsd
 				http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util-4.2.xsd">
 
-	<bean id="simpleContract" class="custom.factory_bean_starter.Contract">
+<!--	<bean id="simpleContract" class="custom.factory_bean_starter.Contract">-->
 
+<!--	</bean>-->
+
+	<bean id="contractService" class="custom.factory_bean_starter.ContractService" />
+
+	<bean id="factoryContract" class="custom.factory_bean_starter.FactoryContract" >
+		<constructor-arg ref="contractService"/>
 	</bean>
 
+	<!-- 使用MyFactoryBean创建FactoryContract -->
+<!--	<bean id="simpleContract" factory-bean="factoryContract" factory-method="getContractName"/>-->
 </beans>
