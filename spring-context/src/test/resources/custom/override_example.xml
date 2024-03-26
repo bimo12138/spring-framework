@@ -12,8 +12,10 @@
 	<bean id="userService" class="custom.override.UserService" >
 		<property name="userDao" ref="userDao" />
 	</bean>
+	<bean id="myReplaceReplace" class="custom.override.MyMethodReplace" />
 
 	<bean id="customUserService" class="custom.override.CustomUserService">
 		<property name="userService" ref="userService" />
+		<replaced-method name="getUser" replacer="myReplaceReplace" />
 	</bean>
 </beans>
