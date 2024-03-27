@@ -237,6 +237,15 @@ public class AnnotationConfigUtils {
 		processCommonDefinitionAnnotations(abd, abd.getMetadata());
 	}
 
+	/**
+	 * lazy
+	 * primary
+	 * dependsOn
+	 * role
+	 * description
+	 * @param abd beanDefinition
+	 * @param metadata bean @Annotations
+	 */
 	static void processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd, AnnotatedTypeMetadata metadata) {
 		// lazy
 		AnnotationAttributes lazy = attributesFor(metadata, Lazy.class);
@@ -261,10 +270,12 @@ public class AnnotationConfigUtils {
 
 		if (abd instanceof AbstractBeanDefinition) {
 			AbstractBeanDefinition absBd = (AbstractBeanDefinition) abd;
+			 // role
 			AnnotationAttributes role = attributesFor(metadata, Role.class);
 			if (role != null) {
 				absBd.setRole(role.getNumber("value").intValue());
 			}
+			// description
 			AnnotationAttributes description = attributesFor(metadata, Description.class);
 			if (description != null) {
 				absBd.setDescription(description.getString("value"));
