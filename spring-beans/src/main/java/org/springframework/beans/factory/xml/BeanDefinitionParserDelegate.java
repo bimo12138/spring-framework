@@ -520,9 +520,11 @@ public class BeanDefinitionParserDelegate {
 			parseMetaElements(ele, bd);
 			parseLookupOverrideSubElements(ele, bd.getMethodOverrides());
 			parseReplacedMethodSubElements(ele, bd.getMethodOverrides());
-
+			// 解析构造器元素
 			parseConstructorArgElements(ele, bd);
+			// 解析 property 元素
 			parsePropertyElements(ele, bd);
+			// 解析 qualifier 属性
 			parseQualifierElements(ele, bd);
 
 			bd.setResource(this.readerContext.getResource());

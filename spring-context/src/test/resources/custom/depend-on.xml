@@ -6,13 +6,7 @@
 				http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context-4.2.xsd
 				http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util-4.2.xsd">
 
-
-	<bean id="account" class="custom.depend.LDAPAccount" init-method="init" destroy-method="destroy">
-		<property name="email" value="111@qq.com" />
-		<property name="password" value="123" />
-
-	</bean>
-<!-- depBean: {account: VIPAccount}	-->
+	<!-- depBean: {account: VIPAccount}	-->
 	<bean id="vipAccount" class="custom.depend.VIPAccount" depends-on="account" init-method="init" destroy-method="destroy">
 		<property name="expireDate" value="2025-01-01" />
 
@@ -22,6 +16,13 @@
 		<property name="name" value="cc" />
 		<property name="age" value="12" />
 	</bean>
+
+	<bean id="account" class="custom.depend.LDAPAccount" init-method="init" destroy-method="destroy">
+		<property name="email" value="111@qq.com" />
+		<property name="password" value="123" />
+
+	</bean>
+
 
 
 

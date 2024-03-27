@@ -247,6 +247,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					throw ex;
 				}
 				finally {
+					// 并发 创建完成的时候的校验
 					if (recordSuppressedExceptions) {
 						this.suppressedExceptions = null;
 					}

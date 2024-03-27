@@ -238,6 +238,7 @@ public class AnnotationConfigUtils {
 	}
 
 	static void processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd, AnnotatedTypeMetadata metadata) {
+		// lazy
 		AnnotationAttributes lazy = attributesFor(metadata, Lazy.class);
 		if (lazy != null) {
 			abd.setLazyInit(lazy.getBoolean("value"));
@@ -248,10 +249,11 @@ public class AnnotationConfigUtils {
 				abd.setLazyInit(lazy.getBoolean("value"));
 			}
 		}
-
+		// primary
 		if (metadata.isAnnotated(Primary.class.getName())) {
 			abd.setPrimary(true);
 		}
+		// dependsOn
 		AnnotationAttributes dependsOn = attributesFor(metadata, DependsOn.class);
 		if (dependsOn != null) {
 			abd.setDependsOn(dependsOn.getStringArray("value"));

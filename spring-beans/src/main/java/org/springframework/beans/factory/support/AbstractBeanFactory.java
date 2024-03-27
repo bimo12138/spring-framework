@@ -239,7 +239,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected <T> T doGetBean(
 			String name, @Nullable Class<T> requiredType, @Nullable Object[] args, boolean typeCheckOnly)
 			throws BeansException {
-
+		// 将 name 转化为 实际的 beanName 如果是 beanFactory 则需要去掉 & 前缀
 		String beanName = transformedBeanName(name);
 		Object bean;
 
@@ -1211,7 +1211,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @param bw the BeanWrapper to initialize
 	 */
 	protected void initBeanWrapper(BeanWrapper bw) {
+		// TODO 为什么需要补充到 beanWrapper 里面，而不是直接从 beanFactory 中取用
 		bw.setConversionService(getConversionService());
+		// TODO 属性编辑器 干什么用的
 		registerCustomEditors(bw);
 	}
 
@@ -1270,6 +1272,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 */
 	protected RootBeanDefinition getMergedLocalBeanDefinition(String beanName) throws BeansException {
 		//首先快速检查concurrent map，with minimal locking.
+		// TODO this.mergedBeanDefinitions 是什么时候进行初始化的
 		RootBeanDefinition mbd = this.mergedBeanDefinitions.get(beanName);
 		if (mbd != null) {
 			return mbd;
