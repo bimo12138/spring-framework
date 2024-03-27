@@ -51,10 +51,11 @@ public abstract class ScopedProxyUtils {
 
 		String originalBeanName = definition.getBeanName();
 		BeanDefinition targetDefinition = definition.getBeanDefinition();
+		// scopedTarget.${beanName}
 		String targetBeanName = getTargetBeanName(originalBeanName);
 
-		// Create a scoped proxy definition for the original bean name,
-		// "hiding" the target bean in an internal target definition.
+		// 为原始 Bean 名称创建作用域代理定义，
+		// 在内部目标定义中“隐藏”目标 Bean。
 		RootBeanDefinition proxyDefinition = new RootBeanDefinition(ScopedProxyFactoryBean.class);
 		proxyDefinition.setDecoratedDefinition(new BeanDefinitionHolder(targetDefinition, targetBeanName));
 		proxyDefinition.setOriginatingBeanDefinition(targetDefinition);
@@ -81,7 +82,7 @@ public abstract class ScopedProxyUtils {
 		targetDefinition.setAutowireCandidate(false);
 		targetDefinition.setPrimary(false);
 
-		// Register the target bean as separate bean in the factory.
+		// 将 target 的 beanDefinition 注册到 bean 容器中
 		registry.registerBeanDefinition(targetBeanName, targetDefinition);
 
 		// Return the scoped proxy definition as primary bean definition
