@@ -84,6 +84,9 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... annotatedClasses) {
 		this();
+		/**
+		 * @see AnnotatedBeanDefinitionReader#doRegisterBean(Class, Supplier, String, Class[], BeanDefinitionCustomizer...)
+		 */
 		register(annotatedClasses);
 		refresh();
 	}

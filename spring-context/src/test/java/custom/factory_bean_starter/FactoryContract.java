@@ -7,6 +7,7 @@ public class FactoryContract implements FactoryBean<Contract> {
 	private Object service;
 
 	public FactoryContract(Object baseService) {
+		System.out.println("CONTRACT FACTORY INIT");
 		this.service = baseService;
 	}
 	@Override

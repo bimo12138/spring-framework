@@ -219,18 +219,30 @@ public class AnnotatedBeanDefinitionReader {
 		 * 	nestedAnnotationsAsMap
 		 */
 		AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(annotatedClass);
+		/**
+		 * 判断 @Condition 相关的注解，判断是否需要加载
+		 */
 		if (this.conditionEvaluator.shouldSkip(abd.getMetadata())) {
 			return;
 		}
-
+		/**
+		 * () -> { return null; }
+		 */
 		abd.setInstanceSupplier(instanceSupplier);
 		// 根据 Scope 注解
+		/**
+		 * @see AnnotationScopeMetadataResolver#resolveScopeMetadata
+		 */
 		ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(abd);
 		abd.setScope(scopeMetadata.getScopeName());
 		// 如果 没指定 name  通过 beanNameGenerator 生成
+		/**
+		 * @see AnnotationBeanNameGenerator#generateBeanName
+		 */
 		String beanName = (name != null ? name : this.beanNameGenerator.generateBeanName(abd, this.registry));
-
+		// 从注解来的
 		AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
+		// 从 API 来的 APi 优先级较高
 		if (qualifiers != null) {
 			for (Class<? extends Annotation> qualifier : qualifiers) {
 				if (Primary.class == qualifier) {
@@ -244,11 +256,16 @@ public class AnnotatedBeanDefinitionReader {
 				}
 			}
 		}
+		// 将 自定义的 构造器中的 bean 安置到 Annotated 注解中
 		for (BeanDefinitionCustomizer customizer : definitionCustomizers) {
 			customizer.customize(abd);
 		}
-
+		// 关键 BeanDefinitionHolder
 		BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);
+
+		/**
+		 * 如果存在代理，则返回 代理过的 definitionHolder ，否则 返回原始 holder
+		 */
 		definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
 		// 将最终的 beanHolder 注册到 registry 里面
 		BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, this.registry);

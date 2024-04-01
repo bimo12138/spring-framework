@@ -5,6 +5,9 @@ public class Contract {
 
 	private String contractName;
 
+	public Contract() {
+		System.out.println("contract INIT");
+	}
 
 	public String getContractNumber() {
 		return contractNumber;
