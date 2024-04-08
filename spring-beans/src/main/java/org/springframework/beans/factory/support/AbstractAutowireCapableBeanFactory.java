@@ -584,6 +584,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object exposedObject = bean;
 		try {
 			// TODO 详细的赋值 具体读取 xmlBeanDefinition 的值从何 ues 是什么时候赋值的
+			// TODO annotation 赋值 相关的逻辑需要重新梳理一下
 			// RootBeanDefinition 的 propertyValues
 			populateBean(beanName, mbd, instanceWrapper);
 			// TODO 初始化方法的各种例子
@@ -1337,7 +1338,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				}
 			}
 		}
-
+		// propertyValues 是从 beanDefinition 获取的
 		PropertyValues pvs = (mbd.hasPropertyValues() ? mbd.getPropertyValues() : null);
 
 		int resolvedAutowireMode = mbd.getResolvedAutowireMode();
