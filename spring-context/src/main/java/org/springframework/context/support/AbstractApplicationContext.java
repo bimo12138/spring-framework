@@ -870,6 +870,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// at this point, primarily for resolution in annotation attribute values.
 		if (!beanFactory.hasEmbeddedValueResolver()) {
 			// TODO 注册解析器
+			// 注意 这里是通过 getEnvironment 处理的，propertySource 中 environment 的数据
 			beanFactory.addEmbeddedValueResolver(strVal -> getEnvironment().resolvePlaceholders(strVal));
 		}
 

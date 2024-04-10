@@ -234,6 +234,7 @@ public abstract class AbstractPropertyResolver implements ConfigurablePropertyRe
 	}
 
 	private String doResolvePlaceholders(String text, PropertyPlaceholderHelper helper) {
+		// this::getPropertyAsRawString 从 environment 获取 propertySource 的方法
 		return helper.replacePlaceholders(text, this::getPropertyAsRawString);
 	}
 
